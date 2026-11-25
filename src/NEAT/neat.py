@@ -25,22 +25,26 @@ class ExtendedStatisticsReporter(neat.StatisticsReporter):
             self.plot_statistics()
         self.generation += 1  
 
-    def plot_statistics(self):
+    def plot_statistics(self, save_to_results=False):
         fig, ax = plt.subplots()
     
         # Retrieve the max fitness values for each generation
         max_fitness_values = [genome.fitness for genome in self.most_fit_genomes]
         ax.plot(max_fitness_values, label="Max Fitness")
     
-    # Retrieve the mean fitness values for each generation and plot
+        # Retrieve the mean fitness values for each generation and plot
         mean_fitness_values = self.get_fitness_mean()
         ax.plot(mean_fitness_values, label="Mean Fitness", linestyle='--')  # Using a dashed line for mean fitness
     
-        ax.set(xlabel='Generation', ylabel='Fitness', title='Fitness over Generations')
+        ax.set(xlabel='Generation', ylabel='Fitness', title='NEAT Fitness over Generations')
         ax.grid()
         ax.legend()  
+        fig.tight_layout()
         os.makedirs(os.path.join("logs", "NEAT"), exist_ok=True)
-        plt.savefig(os.path.join("logs", "NEAT", "neat_fitness_plot_gen{}.png".format(self.generation)))
+        plt.savefig(os.path.join("logs", "NEAT", "neat_fitness_plot_gen{}.png".format(self.generation)), dpi=150)
+        if save_to_results:
+            os.makedirs("results", exist_ok=True)
+            plt.savefig(os.path.join("results", "neat_training_fitness.png"), dpi=150)
         plt.close()
 
 def eval_genomes(genomes, config):
@@ -74,5 +78,6 @@ def run():
     pop.add_reporter(neat.StdOutReporter(True))
 
     winner = pop.run(eval_genomes, 100)
+    stats.plot_statistics(save_to_results=True)
 
     return winner, stats

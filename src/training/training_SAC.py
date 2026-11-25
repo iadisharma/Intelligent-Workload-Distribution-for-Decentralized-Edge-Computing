@@ -117,5 +117,39 @@ def train_sac_agent(env, agent, buffer_size=1000000, batch_size=256, num_episode
     plt.ylabel('Reward')
     plt.savefig("logs/SAC/reward.png")
     plt.show()
+
+    os.makedirs("results", exist_ok=True)
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    axes[0, 0].plot(metrics['Reward'], alpha=0.4, label='Episode Reward')
+    axes[0, 0].plot(metrics['Reward'].rolling(5, min_periods=1).mean(), label='Rolling Mean (5)')
+    axes[0, 0].set_title('SAC Training Rewards')
+    axes[0, 0].set_xlabel('Episodes')
+    axes[0, 0].set_ylabel('Reward')
+    axes[0, 0].legend()
+    axes[0, 0].grid(True)
+
+    axes[0, 1].plot(metrics['Critic 1 Loss'].rolling(5, min_periods=1).mean(), label='Critic 1 Loss')
+    axes[0, 1].plot(metrics['Critic 2 Loss'].rolling(5, min_periods=1).mean(), label='Critic 2 Loss')
+    axes[0, 1].set_title('SAC Critic Losses')
+    axes[0, 1].set_xlabel('Episodes')
+    axes[0, 1].set_ylabel('Loss')
+    axes[0, 1].legend()
+    axes[0, 1].grid(True)
+
+    axes[1, 0].plot(metrics['Actor Loss'].rolling(5, min_periods=1).mean(), color='green')
+    axes[1, 0].set_title('SAC Actor Loss')
+    axes[1, 0].set_xlabel('Episodes')
+    axes[1, 0].set_ylabel('Loss')
+    axes[1, 0].grid(True)
+
+    axes[1, 1].plot(metrics['Alpha Loss'].rolling(5, min_periods=1).mean(), color='purple')
+    axes[1, 1].set_title('SAC Alpha Loss')
+    axes[1, 1].set_xlabel('Episodes')
+    axes[1, 1].set_ylabel('Loss')
+    axes[1, 1].grid(True)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join("results", "sac_training_results.png"), dpi=150)
+    plt.close()
     
     return total_rewards
