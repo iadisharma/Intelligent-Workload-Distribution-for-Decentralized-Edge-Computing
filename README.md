@@ -1,6 +1,7 @@
-# EdgeFlow RL: Intelligent Workload Distribution for Decentralized Edge Computing
+**Project completed at Sikkim Manipal Insitute of Technology in 2023. Publishing on Github for personal record.**
 
-> * Worked on this during undergraduate student researcher at Sikkim Manipal Institute of Technology in 2023.
+
+# EdgeFlow RL: Intelligent Workload Distribution for Decentralized Edge Computing
 
 ## Overview
 **EdgeFlow RL** explores the use of deep reinforcement learning and neuroevolution to optimize workload management in a decentralized edge computing environment. The project implements two deep reinforcement learning algorithms, **SAC (Soft Actor-Critic)** and **PPO (Proximal Policy Optimization)**, alongside the evolutionary algorithm **NEAT (NeuroEvolution of Augmenting Topologies)** to learn effective policies for handling incoming traffic. Depending on current system conditions, the agent decides whether to process requests locally, offload them to neighboring edge nodes, or reject them. Note that the current simulation makes several simplifying assumptions compared to a real-world edge deployment.
